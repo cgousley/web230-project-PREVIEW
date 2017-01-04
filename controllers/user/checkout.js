@@ -57,27 +57,9 @@ module.exports = {
  }, 
 
 completeCheckout: function(req,res){
-	var data = req.body.data;
-	data = JSON.parse(data);
-	
-	var customerOrder = {};
-					
-					customerOrder.orderInfo = data[0].orderInfo;
-										
-					customerOrder.itemInfo = data[0].itemInfo;
-					console.log(customerOrder.itemInfo);
-					console.log(customerOrder.orderInfo);
 
-ordersModel.collection.insert(customerOrder, onInsert);
-
-function onInsert(err, docs) {
-    if (err) {
-        res.send('error');
-    } else {
         res.send('success');
-    }
-}
-
+  
  } 
 
 
