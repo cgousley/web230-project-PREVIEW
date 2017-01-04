@@ -13,4 +13,4 @@ var adminsSchema = new Schema({
 	password: String},
 	{collection: 'Admins'});
 
-module.exports = mongoose.model('Admins', adminsSchema);
+module.exports = mongoose.model('PREVIEW_Admins', adminsSchema);

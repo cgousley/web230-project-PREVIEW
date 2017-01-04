@@ -24,7 +24,7 @@ var usersSchema = new Schema({
 
 	password: {type: String, required: true, match: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^.])(?=.*[!@#$%^&*]).{8,10}$/}},
 
-{collection: 'Users'});
+{collection: 'PREVIEW_Users'});
 	
 
 usersSchema.pre('save', function(next){

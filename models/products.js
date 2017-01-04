@@ -15,7 +15,7 @@ var productsSchema = new Schema({
 	},
 	{collection: "Products"});
 
-module.exports = mongoose.model('Products', productsSchema);
+module.exports = mongoose.model('PREVIEW_Products', productsSchema);
 
 
 

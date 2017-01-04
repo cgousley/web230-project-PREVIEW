@@ -24,7 +24,7 @@ var ordersSchema = new Schema({
 
 // }]
 
-module.exports = mongoose.model('Orders', ordersSchema);
+module.exports = mongoose.model('PREVIEW_Orders', ordersSchema);
 
 
 

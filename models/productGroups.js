@@ -8,4 +8,4 @@ var productGroupsSchema = new Schema({
 	},
 	{collection: 'Product_Groups'});
 
-module.exports = mongoose.model('Product_Groups', productGroupsSchema);
+module.exports = mongoose.model('PREVIEW_Product_Groups', productGroupsSchema);
