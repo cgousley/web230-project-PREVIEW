@@ -20,7 +20,7 @@ var ordersSchema = new Schema({
 	}],
 	
 	},
-	{collection: "Orders"});
+	{collection: "PREVIEW_Orders"});
 
 // }]
 
