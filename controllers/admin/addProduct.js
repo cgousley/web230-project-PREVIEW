@@ -79,49 +79,10 @@ module.exports = {
     
      /*THIS PROVIDES THE CONTENT FOR THE INDEX PAGE*/
     addProduct: function(req, res){
-    	
 
-        
- 		if (req.file.mimetype === 'image/jpeg'){
- 			
- 			req.file.destination += '/'+req.body.filePath;
- 			var newimage_path = req.file.destination.slice(1)+'/'+req.file.originalname;
-				
-				fs.rename('./public/img/'+req.file.filename, req.file.destination+'/'+req.file.originalname, function (err) {
-				if(err){
-					console.log(err);
-				}
-				else{
-					
-					var productData = {}
-					productData.group_id = req.body.pgroup;
-					productData.fragrance = req.body.pname;
-					productData.price = req.body.pprice;
-					productData.image = req.body.fileName;
-					productData.image_path = newimage_path;
-					productData.removed = ' ';
-					
-					// req.body.filePath.slice(1)+req.file.originalname;
-					
-					// productData.image_path = '/public/img/'+req.file.originalname;
-					productData.description = req.body.pdescription;
-					var doc = new ProductsModel(productData);
-					doc.save(function(err){
-						if(err){
-							res.send('error');
-						}
-						else {
-							res.send('success');
-						}
-					});
-
-				}
-			});
-		}
-		else {
-			res.send('error');
-		} 			
- 		},
+		res.send('success');
+		
+	},
  		
 		
 

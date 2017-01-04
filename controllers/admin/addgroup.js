@@ -34,40 +34,9 @@ module.exports = {
      
      /*THIS PROVIDES THE CONTENT FOR THE INDEX PAGE*/
     addGroupNow: function(req, res){
-	 console.log(req.body);
-	 
-	 data = JSON.parse(req.body.data);
-	 
-	 var folderName = data.newGroupName;
-	 
-	 var folderNameLower = folderName.toLowerCase();
-	 
-	 
-	 var newPath = './public/img/'+ data.newGroupFolder+'/'
 
-	var groupData = {}
-					groupData.group_id = data.newGroupName;
-					groupData.group_name = data.newGroupName;
-					groupData.image_path = data.newGroupFolder;
-					
-					var doc = new Product_GroupsModel(groupData);
-					doc.save(function(err){
-						if(err){
-							res.send('error');
-						}
-						else {
-							
-							fs.mkdir(newPath, function(err){
-								if(err){
-									console.log(err);
-								}
-								else{
-									res.send('success');
-									
-								}
-							});
-						}
-					});
+		res.send('success');
+
  	},
      
      /*THIS PROVIDES THE CONTENT FOR THE INDEX PAGE*/
