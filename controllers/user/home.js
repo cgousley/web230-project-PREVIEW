@@ -2,9 +2,9 @@ var Product_GroupsModel = require('../../models').Product_Groups;
 var ProductsModel = require('../../models').Products;
 var productDetails = [];
 module.exports = {
-	/*THIS PROVIDES THE CONTENT FOR THE INDEX PAGE*/
+	/*THIS PROVIDES THE CONTENT FOR THE Home PAGE*/
     index: function(req, res){
-
+// Gathers list of product groups for dropdown 
 	Product_GroupsModel.find({}).
 	select({group_name: 1, group_id: 1}).
 	exec(function(err, productGroups){
@@ -12,9 +12,11 @@ module.exports = {
 			console.log(err);
 		}
 		else{
+// 			If user logged in, load home page with shopping cart nav bar
 			if(req.session.success && req.session.user){
 				 res.render('user/home',{title: 'Shopping Cart - Home', heading: 'Home Page', cart: true, group: productGroups, product: productDetails, productDescriptions: true, userHead: true});
            	}
+// 			If user not logged in, load home page with standard nav bar
            	else{
            		 res.render('user/home',{title: 'Shopping Cart - Home', heading: 'Home Page', nav: true, group: productGroups, product: productDetails, productDescriptions: true, userHead: true});
            	}
@@ -23,6 +25,7 @@ module.exports = {
  	
  	},
     
+//     Gather list of products based on dropdown selection, feed into createProductTable(), and send  
     showProductTable: function (req, res) {
     	data = JSON.parse(req.body.data);
     	ProductsModel.find({group_id: data.group_id, "removed" : {$ne: "PRODUCT REMOVED"}}).
@@ -35,6 +38,7 @@ module.exports = {
     } 	
 }
 
+// generates product table
 createProductTable = function(data){
 	// checks to see if there is data in the table
 	if(data.length !== 0){
