@@ -11,8 +11,7 @@ module.exports = {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
           
-        /*IF THE PERSON IS ALREADY LOGGED IN AND THEY GOT TO THIS PAGE
-        THEY ARE REDIRECTED BACK TO THE ADMIN HOME PAGE.*/
+        /*IF THE PERSON IS ALREADY LOGGED IN AND THEY GOT TO THIS PAGE, THEN LOAD PAGE AND GATHER LIST OF PRODUCT GROUPS FOR DROPDOWN*/
         if(req.session.success && req.session.admin){
              
         	Product_GroupsModel.find({}).
@@ -28,20 +27,19 @@ module.exports = {
            /*IF THERE IS AN ERROR PARAMETER PASSED WITH THE VALUE OF 1 THEN DISPLAY AN ERROR MESSAGE AND SHOW THE LOGIN PAGE.*/
 		}
 		
-		//If session is success but privlege is user and not admin, redirect to 401
-        else if(req.session.success && req.session.user && !req.session.admin){
-        	// res.render('views/401', {nav: true, subtitle: " - Page Not Found", image: "https://httpstatusdogs.com/img/401.jpg",  text: "<p class='lead text-center top20'>You're not authorized to view this page.</br>"+"But you're not stuck! Our navigation bar is above!</p>"});
+		//If session is success but privlege is user, redirect to 401
+        else if(req.session.success && req.session.user){
         	   res.redirect('../401'); 
         }
         
-        	
+        	//NOT LOGGED IN AT ALL, SEND TO ADMIN LOGIN PAGE
 		else {
 	      	error = "You do not have access to the admin area";
 	      	res.render('admin/login',{error: error, title: 'Shopping Cart - Admin Login', blankBar: true, adminHead: true})
         }
 	},
      
-     
+//  THIS CREATES LIST OF PRODUCTS FOR DROPDOWN QUERY     
  showProductTable: function (req, res) {
     	data = JSON.parse(req.body.data);
     	
@@ -51,19 +49,18 @@ module.exports = {
 						select({fragrance: 1, price: 1, group_id: 1, _id: 1, description: 1, image_path: 1}).
 						exec(function(err, productDetails){
 							var table = createUpdateProductTable(productDetails);
-	// /* CREATE THE NEW TABLE BASED UPON THE DATABASE QUERY */
+	// CREATE THE NEW TABLE BASED UPON THE DATABASE QUERY AND SEND 
 							res.send(table);
 		    			});
       
    },
    
-   
+// GATHERS PRODUCT INFORMATION TO SEND TO USER SO HE/SHE CAN UPDATE   
 getProduct2Update: function(req, res){
           
 
           
-          /*IF THE PERSON IS ALREADY LOGGED IN AND THEY GOT TO THIS PAGE
-          THEY ARE REDIRECTED BACK TO THE ADMIN HOME PAGE.*/
+          //IF THE USER IS ALREADY LOGGED IN, HE/SHE MAY PROCEED  
           if(req.session.success){
             
              		
@@ -86,21 +83,27 @@ getProduct2Update: function(req, res){
               
              
            }
-           /*IF THERE IS AN ERROR PARAMETER PASSED WITH THE VALUE OF 1 THEN DISPLAY AN ERROR MESSAGE AND SHOW THE LOGIN PAGE.*/
+           /*IF //IF THE USER IS NOT LOGGED IN, THERE IS AN ERROR PARAMETER PASSED WITH THE VALUE OF 1 THEN DISPLAY AN ERROR MESSAGE AND SHOW THE LOGIN PAGE.*/
           else {
               error = "You do not have access to the admin area";
               res.render('admin/login',{error: error, title: 'Shopping Cart - Admin Login', blankBar: true, adminHead: true})
            }
           
      },
-     
-updateProduct: function(req, res){
 
-	res.send('success');
+//THIS UPDATES THE PRODUCT     
+updateProduct: function(req, res){
+    	
+
+    				res.send('success');
+    			
+    	
+
 },
      
 
-   
+//THis removes the product by adding "removed : PRODUCT REMOVED" to the product occurences in the orders and product collections in the DB
+//Then, it queries the db for all products that don't have "removed : PRODUCT REMOVED", creates a table, and sends it to the user as the updated product table  
 deleteProduct: function (req, res){
 
 						ProductsModel.find({group_id: data.group_id, "removed" : {$ne: "PRODUCT REMOVED"}}). 
@@ -111,17 +114,13 @@ deleteProduct: function (req, res){
 							var table = createUpdateProductTable(productDetails);
 							res.send(table);
 		    			});
+			
+					
 	
 },     
      
-     
-     
-     
-          
-     // /*THIS PROVIDES THE CONTENT FOR THE INDEX PAGE*/
-    access: function(req, res){
-          res.render('admin/updateProduct',{title: 'Shopping Cart - Admin Update Product', heading: 'Update Product', admin: true, group: productGroups, adminHead: true, textVal: true, addProductMessage: true});
- 	},
+         
+    
 
 }
 
@@ -147,35 +146,3 @@ createUpdateProductTable = function(data){
 	table += '</tbody></table>';
 	return table;
 }
-
-
-
-createUpdateForm = function(data){
-
-var updateForm = '<label for="productName" class="loginFormElement">Product Name:</label>'
-updateForm += '<i data-toggle="popover" title="Field error" data-content="Field name cannot be blank." data-placement="right" class="fa fa-exclamation-circle loginError" aria-hidden="true" style="display: none;"></i>'
-updateForm += '<input class="form-control hasError" id="productName" placeholder="" value="'+data.fragrance+'">'
-updateForm += '</div>'
-
-updateForm += '<div class="form-group">'
-updateForm += '<label for="productPrice" class="loginFormElement">Product Price:</label>'
-updateForm += '<i data-toggle="popover" title="Field error" data-content="Field name cannot be blank and is not in email format." data-placement="right" class="fa fa-exclamation-circle loginError" aria-hidden="true" style="display: none;"></i>'
-updateForm += '<input name="productPrice" class="form-control hasError" id="productPrice" placeholder="" value="'+data.price+'">'
-updateForm += '</div>'
-
-updateForm += '<div class="form-group">'
-updateForm += '<label for="productImage" class="loginFormElement">Product Image:</label>'
-updateForm += '<i data-toggle="popover" title="Field error" data-content="Field name cannot be blank and is not in email format." data-placement="right" class="fa fa-exclamation-circle loginError" aria-hidden="true" style="display: none;"></i>'
-updateForm += '<input name="productPrice" type="file" class="form-control hasError file" id="productPrice">'
-updateForm += '</div>'
-
-updateForm += '<div class="form-group">'
-updateForm += '<label for="productDescription" class="loginFormElement">Product Description:</label>'
-updateForm += '<textarea class="form-control hasError" rows="5" id="productDescription">"'+data.description+'"</textarea>'
-updateForm += '</div>'
-
-updateForm += '<button type="submit" id="submit" class="btn btn-success loginFormElement">Update Product</button> <!-- data-toggle="modal" data-target="#updateMessage" -->'
-updateForm += '</form>'
-updateForm += '</div>'
-	return updateForm;
-}          
