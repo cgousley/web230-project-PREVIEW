@@ -13,13 +13,9 @@ module.exports = {
            if(req.session.success && req.session.admin){
         	res.redirect('../../admin/home');
         }
-        // //If session is success but privlege is user, redirect to 401
-        // else if(req.session.success && req.session.user){
-        	   // res.redirect('../401');
-        // }
+       
         /*IF THERE IS NOT SUCCESS PROPERTY THEN SEND THE BACK TO LOGIN PAGE.*/
         else{
-            // res.redirect('/admin/login/?error=1');
           res.render('admin/login',{title: 'Admin - Login', heading: 'Home Page', blankBar: true, ackMessage: true});
        	}
 
@@ -135,4 +131,3 @@ module.exports = {
      }
 
 }
-
