@@ -11,6 +11,8 @@ var express = require('express'),
 		key: fs.readFileSync('key.pem'),
 		cert: fs.readFileSync('cert.pem')
 	};
+	session = require('express-session');
+        MongoStore = require('connect-mongo')(session);
 
 
 /* CALL THE MODULE.EXPORTS CONSTRUCTOR FUNCTION OF THE CONFIGURE FILE THIS ADDS TO APP AND RETURNS APP

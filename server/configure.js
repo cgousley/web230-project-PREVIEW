@@ -6,7 +6,8 @@ var routes = require('./routes'),
 	bodyParser = require('body-parser'),
 	session = require('express-session');
 	cookieParser = require('cookie-parser');
-	
+	mongoose = require('mongoose');
+
 module.exports = function(app){
 	/*SET UP BODYPARSER	*/
 	// app.use(bodyParser.urlencoded({'extended':false}));
@@ -18,6 +19,7 @@ module.exports = function(app){
 		secret: 'thisisasecret',
 		resave: false,
 		saveUninitialized: false,
+		store: new MongoStore({ mongooseConnection: mongoose.connection }),
 		// cookie: {
 	  		// secure: true,
 // 	  		
